@@ -28,3 +28,4 @@ C:\Users\yong\Desktop\BullionTrade\fyp\obj\Debug\net8.0\refint\fyp.dll
 C:\Users\yong\Desktop\BullionTrade\fyp\obj\Debug\net8.0\fyp.pdb
 C:\Users\yong\Desktop\BullionTrade\fyp\obj\Debug\net8.0\fyp.genruntimeconfig.cache
 C:\Users\yong\Desktop\BullionTrade\fyp\obj\Debug\net8.0\ref\fyp.dll
+C:\Users\yong\Desktop\BullionTrade\fyp\obj\Debug\net8.0\fyp.sourcelink.json
