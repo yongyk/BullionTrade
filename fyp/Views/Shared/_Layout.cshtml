@@ -13,7 +13,7 @@
 <body>
     <header>
       
-        <nav class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3 ">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3 ">
             <div class="jumbotron">
                 <div class="container text-center">
                     <h1>Online Store</h1>
@@ -27,7 +27,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">HomePg</a>
                         </li>
@@ -48,6 +48,7 @@
                                 <li><hr class="dropdown-divider"></li>
 
                     </ul>
+                    <partial name="_LoginPartial" />
                     </li>
                 </div>
             </div>
