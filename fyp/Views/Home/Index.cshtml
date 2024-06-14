@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<body>
+<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" style="z-index:1020; position:relative; margin-top:300px;">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="~/img/gold1.jpg" class="d-block w-100 " style="height:300px;"alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="~/img/maplegold.webp" class="d-block w-100" style="height:300px;" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="~/img/gold1.jpg" class="d-block w-100" style="height:300px;" alt="...">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+
+<h1>Hello </h1>
+<section class="hidden">
+    <h1>Hi Tom </h1>
+    <p>This is my website </p>
+</section>
+<section class="hidden">
+    <h2>Buy my product</h2>
+    <p>
+        The things that you own end up owning you
+        It is only after you lose everything that you free to do anything
+    </p>
+</section>
+<section class="hidden">
+    <h2>It's really good'</h2>
+</section>
+</body>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Homepg.css" asp-append-version="true">
+}
+@section Scripts {
+    <script defer src="~/js/Homepg.js" asp-append-version="true"></script>
+}

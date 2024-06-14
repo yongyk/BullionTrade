@@ -1,0 +1,55 @@
+﻿
+/*
+.carousel-inner img {
+    width: 100%; 
+    margin: auto;
+    min-height: 200px;
+}
+    */
+
+
+/*
+@media (max-width: 600px) {
+    .carousel-caption {
+        display: none;
+    }
+}
+    */
+
+body{
+    background-color: darkred;
+    color: white;
+    padding:0;
+    margin:0;
+}
+section{
+    display:grid;
+    place-items: center;
+    align-content: center;
+    min-height: 100vh;
+}
+
+.sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.container-fluid {
+    overflow-x: hidden; /* This can disrupt sticky positioning */
+}
+
+
+.hidden {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateX(-100%);
+    /* transition: all 5s ease ease-in-out;*/
+     transition: all 1s;
+}
+
+.show {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0);
+}
