@@ -53,3 +53,22 @@ button.accept-policy {
     z-index: 1000;
 }
 
+.navbar {
+    height: 90px; /* Increase the height as needed */
+    z-index: 1030;
+}
+
+.navbar-nav .nav-link {
+    line-height: 56px; /* Adjust this value based on your navbar's height */
+    /* Alternatively, use padding */
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.navbar-toggler {
+    height: 60px; /* Adjust this value to match your navbar's height */
+    align-items: center; /* This will center the toggler icon vertically */
+    display: flex;
+    display: none;
+}
+
+

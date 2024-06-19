@@ -1,0 +1,43 @@
+﻿@model Product
+<body style="margin-top:100px;">
+    <form method="post">
+        <input asp-for="Id" hidden />
+        <div class="border p-3 mt-4">
+            <div class="row pb-2">
+                <h2>Delete Product</h2>
+                <hr />
+            </div>
+
+            <div class="mb-3 row p-1">
+                <label class="p-0" asp-for="Name"></label>
+                <input asp-for="Name" type="text" class="form-control" disabled />
+            </div>
+            <div class="mb-3 row p-1">
+                <label class="p-0" asp-for="Description"></label>
+                <input asp-for="Description" type="text" class="form-control" disabled />
+            </div>
+            <div class="mb-3 row p-1">
+                <label class="p-0" asp-for="Price"></label>
+                <input asp-for="Price" type="text" class="form-control" disabled />
+            </div>
+
+            <div class="row">
+                <div class="col-6 col-md-3">
+                    <button type="submit" class="btn btn-primary form-control">
+                        Delete
+                    </button>
+                </div>
+                @*col-md-3 means that if screen is smaller than medium it will take 3 columns else it will take 6 column*@
+                <div class="col-6 col-md-3">
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary form-control">
+                        Back To List
+                    </a>
+                </div>
+
+
+            </div>
+
+        </div>
+    </form>
+</body>
+
