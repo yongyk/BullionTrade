@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,7 +20,10 @@ namespace fyp.Models
         public int CategoryId { get; set; }
         //foreign key
         [ForeignKey("CategoryId")]
+        [ValidateNever]
         public Category Category { get; set; }
         //linking to other table (Category table)
+        [ValidateNever]
+        public string ImageUrl { get; set; }
     }
 }

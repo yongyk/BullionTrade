@@ -8,6 +8,6 @@ namespace fyp.Models
         public int Id { get; set; }
         [Required]
         [DisplayName("Category Name")]
-        public string Name{ get; set; }
+        public string Name { get; set; }
     }
 }

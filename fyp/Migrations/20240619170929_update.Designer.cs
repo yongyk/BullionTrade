@@ -12,8 +12,8 @@ using fyp.Data;
 namespace fyp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240619022945_seedCategoryTable")]
-    partial class seedCategoryTable
+    [Migration("20240619170929_update")]
+    partial class update
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -257,7 +257,74 @@ namespace fyp.Migrations
                         new
                         {
                             Id = 2,
-                            Name = "Gold Coins"
+                            Name = "Gold Coin"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Gold Dinar"
+                        });
+                });
+
+            modelBuilder.Entity("fyp.Models.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Products", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 2,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tortor pretium viverra suspendisse potenti. Condimentum vitae sapien pellentesque habitant morbi. Aliquam ultrices sagittis orci a scelerisque purus. Amet cursus sit amet dictum sit amet justo. Auctor urna nunc id cursus metus. Magnis dis parturient montes nascetur ridiculus mus. Mauris rhoncus aenean vel elit. Commodo sed egestas egestas fringilla phasellus faucibus scelerisque eleifend. Dictum sit amet justo donec enim diam. Tristique senectus et netus et malesuada fames ac turpis egestas. Mauris commodo quis imperdiet massa tincidunt nunc pulvinar. Dignissim convallis aenean et tortor at. Ut eu sem integer vitae justo. Sapien pellentesque habitant morbi tristique. Nisl purus in mollis nunc sed id semper risus in.",
+                            ImageUrl = "",
+                            Name = "pamp gold bar 10 g",
+                            Price = 5000.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 2,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tortor pretium viverra suspendisse potenti. Condimentum vitae sapien pellentesque habitant morbi. Aliquam ultrices sagittis orci a scelerisque purus. Amet cursus sit amet dictum sit amet justo. Auctor urna nunc id cursus metus. Magnis dis parturient montes nascetur ridiculus mus. Mauris rhoncus aenean vel elit. Commodo sed egestas egestas fringilla phasellus faucibus scelerisque eleifend. Dictum sit amet justo donec enim diam. Tristique senectus et netus et malesuada fames ac turpis egestas. Mauris commodo quis imperdiet massa tincidunt nunc pulvinar. Dignissim convallis aenean et tortor at. Ut eu sem integer vitae justo. Sapien pellentesque habitant morbi tristique. Nisl purus in mollis nunc sed id semper risus in.",
+                            ImageUrl = "",
+                            Name = "pamp gold bar 50 g",
+                            Price = 50000.0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 3,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tortor pretium viverra suspendisse potenti. Condimentum vitae sapien pellentesque habitant morbi. Aliquam ultrices sagittis orci a scelerisque purus. Amet cursus sit amet dictum sit amet justo. Auctor urna nunc id cursus metus. Magnis dis parturient montes nascetur ridiculus mus. Mauris rhoncus aenean vel elit. Commodo sed egestas egestas fringilla phasellus faucibus scelerisque eleifend. Dictum sit amet justo donec enim diam. Tristique senectus et netus et malesuada fames ac turpis egestas. Mauris commodo quis imperdiet massa tincidunt nunc pulvinar. Dignissim convallis aenean et tortor at. Ut eu sem integer vitae justo. Sapien pellentesque habitant morbi tristique. Nisl purus in mollis nunc sed id semper risus in.",
+                            ImageUrl = "",
+                            Name = "pamp gold bar 5 g",
+                            Price = 500.0
                         });
                 });
 
@@ -333,6 +400,17 @@ namespace fyp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("fyp.Models.Product", b =>
+                {
+                    b.HasOne("fyp.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }
