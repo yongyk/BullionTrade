@@ -8,5 +8,12 @@ namespace fyp.Models.ViewModels
         public Product Product { get; set; }
         [ValidateNever]
         public IEnumerable<SelectListItem> CategoryList { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> BrandList { get; set; }
+        [ValidateNever]
+        public IEnumerable<SelectListItem> MetalList { get; set; }
+        [ValidateNever]
+        public IEnumerable<SelectListItem> PurityList { get; set; }
     }
 }

@@ -1,8 +1,11 @@
 using fyp.Data;
 using fyp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Security.Claims;
+
 
 namespace fyp.Areas.Customer.Controllers
 {
@@ -34,11 +37,51 @@ namespace fyp.Areas.Customer.Controllers
             return View(prod);  
         }
 
-        public IActionResult Details(int? id)
+        public IActionResult Details(int id)
         {
-            Product? prod = _db.Products.Include(p => p.Category).FirstOrDefault(u=>u.Id==id);
+            //maybe this causes weird err
+            ShoppingCart cart = new()
+            {
+                Product = _db.Products.Include(p => p.Category).FirstOrDefault(u => u.Id == id),
+                Count = 1,
+                ProductId = id
+            };
+            //Product? prod = _db.Products.Include(p => p.Category).FirstOrDefault(u=>u.Id==id);
 
-            return View(prod);
+            return View(cart);
+        }
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(ShoppingCart shoppingCart)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId= claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //Product? prod = _db.Products.Include(p => p.Category).FirstOrDefault(u=>u.Id==id);
+            shoppingCart.ApplicationUserId = userId;
+            //new things added 
+            shoppingCart.Id = 0;
+
+            ShoppingCart cartFromDb = _db.ShoppingCarts.FirstOrDefault(u => u.ApplicationUserId == userId && u.ProductId ==shoppingCart.ProductId);
+
+            if(cartFromDb != null)
+            {
+                //shopping cart exists
+                //update the shopping cart counts
+                cartFromDb.Count += shoppingCart.Count;
+                _db.ShoppingCarts.Update(cartFromDb);
+            }
+            else
+            {
+                //add cart record
+                _db.ShoppingCarts.Add(shoppingCart);
+
+            }
+            TempData["success"] = "cart updated successfully";
+
+           // _db.ShoppingCarts.Add(shoppingCart);
+            _db.SaveChanges();
+          
+            return RedirectToAction("Product");
         }
 
 

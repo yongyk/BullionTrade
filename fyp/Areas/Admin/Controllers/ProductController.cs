@@ -39,6 +39,28 @@ namespace fyp.Areas.Admin.Controllers
                     Text = u.Name,
                     Value = u.Id.ToString()
                 }),
+                BrandList = new List<SelectListItem>  // Example hardcoded list
+        {
+            new SelectListItem{ Text="Pamp", Value="Pamp"},
+            new SelectListItem{ Text="Valcambi", Value="Valcambi"},
+            new SelectListItem{ Text="RCM", Value="RCM"},
+             new SelectListItem{ Text="PerthMint", Value="PerthMint"},
+
+
+
+        },
+                MetalList = new List<SelectListItem>
+        {
+            new SelectListItem{ Text="Gold", Value="Gold"},
+            new SelectListItem{ Text="Silver", Value="Silver"},
+            new SelectListItem{ Text="Bronze", Value="Bronze"}
+        },
+                PurityList = new List<SelectListItem>
+        {
+            new SelectListItem{ Text="999", Value="999"},
+            new SelectListItem{ Text="916", Value="916"}
+        },
+
                 Product = new Product()
             };
             if (id == null || id == 0)

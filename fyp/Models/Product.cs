@@ -25,5 +25,13 @@ namespace fyp.Models
         //linking to other table (Category table)
         [ValidateNever]
         public string ImageUrl { get; set; }
+
+        public string ProductBrand { get; set; }
+        public string ProductMetal { get; set; }
+        public string ProductPurity { get; set; }
+
+        [DisplayName("Available Quantity")]
+        [Range(0, 1000, ErrorMessage = "Quantity must be non-negative")]
+        public int Quantity { get; set; }
     }
 }

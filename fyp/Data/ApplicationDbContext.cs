@@ -15,6 +15,7 @@ namespace fyp.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<ShoppingCart>ShoppingCarts { get; set; }   
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,7 +33,11 @@ namespace fyp.Data
                 "Mauris rhoncus aenean vel elit. Commodo sed egestas egestas fringilla phasellus faucibus scelerisque eleifend. Dictum sit amet justo donec enim diam. Tristique senectus et netus et malesuada fames ac turpis egestas. Mauris commodo quis imperdiet massa tincidunt nunc pulvinar. Dignissim convallis aenean et tortor at." +
                 " Ut eu sem integer vitae justo. Sapien pellentesque habitant morbi tristique. Nisl purus in mollis nunc sed id semper risus in.",
                 Price=5000, CategoryId=2,
-                    ImageUrl = ""
+                    ImageUrl = "",
+                    ProductBrand = "Pamp",
+                    ProductMetal = "Gold",
+                    ProductPurity = "999.9",
+                    Quantity = 300
                 },
 
                    new Product
@@ -45,7 +50,11 @@ namespace fyp.Data
                 " Ut eu sem integer vitae justo. Sapien pellentesque habitant morbi tristique. Nisl purus in mollis nunc sed id semper risus in.",
                        Price = 50000,
                        CategoryId = 2,
-                       ImageUrl=""
+                       ImageUrl="",
+                       ProductBrand = "Pamp",
+                       ProductMetal = "Gold",
+                       ProductPurity = "999",
+                       Quantity = 300
                    },
                   
                   
@@ -58,12 +67,18 @@ namespace fyp.Data
                 "Mauris rhoncus aenean vel elit. Commodo sed egestas egestas fringilla phasellus faucibus scelerisque eleifend. Dictum sit amet justo donec enim diam. Tristique senectus et netus et malesuada fames ac turpis egestas. Mauris commodo quis imperdiet massa tincidunt nunc pulvinar. Dignissim convallis aenean et tortor at." +
                 " Ut eu sem integer vitae justo. Sapien pellentesque habitant morbi tristique. Nisl purus in mollis nunc sed id semper risus in.",
                           Price = 500, CategoryId=3,
-                          ImageUrl = ""
+                          ImageUrl = "",
+                          ProductBrand = "Pamp",
+                          ProductMetal = "Gold",
+                          ProductPurity = "999",
+                          Quantity = 300
 
                       }
             
              );
-
+            modelBuilder.Entity<ShoppingCart>()
+       .Property(s => s.Id)
+       .ValueGeneratedOnAdd();
 
             base.OnModelCreating(modelBuilder);
         }
