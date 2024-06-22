@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using fyp.Data;
 using fyp.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Stripe;
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -16,7 +17,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -41,10 +45,11 @@ builder.Services.AddAuthentication().AddFacebook(opt =>
 */
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+//StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
 app.MapRazorPages();
 

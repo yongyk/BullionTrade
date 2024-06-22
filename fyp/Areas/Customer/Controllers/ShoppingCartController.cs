@@ -6,6 +6,7 @@ using fyp.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Stripe.Checkout;
 using System.Security.Claims;
 
 namespace fyp.Areas.Customer.Controllers
@@ -15,6 +16,7 @@ namespace fyp.Areas.Customer.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly ApplicationDbContext _db;
+        [BindProperty]
         public ShoppingCartVM ShoppingCartVM { get; set; }      
         public ShoppingCartController(ApplicationDbContext db)
         {
@@ -26,14 +28,15 @@ namespace fyp.Areas.Customer.Controllers
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             ShoppingCartVM = new()
             {
-                ShoppingCartList = _db.ShoppingCarts.Where(a=>a.ApplicationUserId == userId).Include (p=>p.Product)
+                ShoppingCartList = _db.ShoppingCarts.Where(a=>a.ApplicationUserId == userId).Include (p=>p.Product),
+                OrderHeader=new ()
             };
 
             
             foreach(var cart in ShoppingCartVM.ShoppingCartList)
             {
                 cart.Price = GetPrice(cart);
-                ShoppingCartVM.OrderTotal += (cart.Price * cart.Count);
+                ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
             }
             return View(ShoppingCartVM);
            
@@ -69,83 +72,130 @@ namespace fyp.Areas.Customer.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-
-        /*
-        public IActionResult Create()
+        public IActionResult Delete(int cId)
         {
-            return View(new ShoppingCart());
-        }
-        public IActionResult Create(ShoppingCart obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _db.ShoppingCarts.Add(obj);
-                _db.SaveChanges();
-                TempData["success"] = "cart item added successfully";
-                return RedirectToAction("Index", "ShoppingCart");
-            }
-            return View();
-
-        }
-        public IActionResult Edit(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            Category? category = _db.Categories.FirstOrDefault(c => c.Id == id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-            return View(category);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(Category obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _db.Categories.Update(obj);
-                _db.SaveChanges();
-                TempData["success"] = "Cart updated successfully";
-
-                return RedirectToAction("Index", "Category");
-            }
-            return View();
-
-        }
-        public IActionResult Delete(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            ShoppingCart? shoppingCart = _db.ShoppingCarts.FirstOrDefault(c => c.Id == id);
-            if (shoppingCart == null)
-            {
-                return NotFound();
-            }
-            return View(shoppingCart);
-        }
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
-        {
-            ShoppingCart? obj = _db.ShoppingCarts.Find(id);
-            if (obj == null)
-            {
-                return NotFound();
-
-            }
-
-            _db.ShoppingCarts.Remove(obj);
+            var getCart = _db.ShoppingCarts.FirstOrDefault(a => a.Id == cId);          
+                // remove from cart
+             _db.ShoppingCarts.Remove(getCart);            
             _db.SaveChanges();
-            TempData["success"] = "cart item deleted successfully";
-
             return RedirectToAction("Index");
-
         }
-        */
-    }
+
+
+        public IActionResult Summary()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            ShoppingCartVM = new()
+            {
+                ShoppingCartList = _db.ShoppingCarts.Where(a => a.ApplicationUserId == userId).Include(p => p.Product),
+                OrderHeader = new()
+            };
+            ShoppingCartVM.OrderHeader.ApplicationUser = _db.ApplicationUsers.FirstOrDefault(u => u.Id == userId);
+
+            ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
+            ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
+            ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress;
+            ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
+            ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
+            ShoppingCartVM.OrderHeader.PostalCode = ShoppingCartVM.OrderHeader.ApplicationUser.PostalCode;
+
+
+
+            foreach (var cart in ShoppingCartVM.ShoppingCartList)
+            {
+                cart.Price = GetPrice(cart);
+                ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+            }
+            return View(ShoppingCartVM);
+        }
+        [HttpPost]
+        [ActionName("Summary")]
+		public IActionResult SummaryPOST()
+		{
+			var claimsIdentity = (ClaimsIdentity)User.Identity;
+			var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            ShoppingCartVM.ShoppingCartList = _db.ShoppingCarts.Where(a => a.ApplicationUserId == userId).Include(p => p.Product).ToList();
+            ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
+
+            ApplicationUser applicationUser = _db.ApplicationUsers.FirstOrDefault(u => u.Id == userId);
+
+			foreach (var cart in ShoppingCartVM.ShoppingCartList)
+			{
+				cart.Price = GetPrice(cart);
+				ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+			}
+            //normal user
+            ShoppingCartVM.OrderHeader.PaymentStatus = "Pending";
+			ShoppingCartVM.OrderHeader.OrderStatus = "Pending";
+
+            _db.OrderHeaders.Add(ShoppingCartVM.OrderHeader);
+            _db.SaveChanges();
+
+            foreach(var cart in ShoppingCartVM.ShoppingCartList)
+            {
+                OrderDetail orderDetail = new()
+                {
+                    ProductId = cart.ProductId,
+                    OrderHeaderId = ShoppingCartVM.OrderHeader.Id,
+                    Price = cart.Price,
+                    Count = cart.Count
+                };
+                _db.OrderDetails.Add(orderDetail);
+                _db.SaveChanges();
+            }
+            //normal user
+            //stripe logic
+
+            var domains = "https://localhost:7293/";
+			var options = new SessionCreateOptions
+			{
+				SuccessUrl = domains+ $"customer/ShoppingCart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
+                CancelUrl = domains+ $"customer/ShoppingCart/index",
+				LineItems = new List<SessionLineItemOptions>(),
+				Mode = "payment",
+			};
+
+            foreach(var item in ShoppingCartVM.ShoppingCartList)
+            {
+                var sessionLineItem = new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = (long)(item.Price * 100), //$20.50 =>2050
+                        Currency = "myr",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = item.Product.Name
+                        }
+                    },
+                    Quantity = item.Count
+                };
+                options.LineItems.Add(sessionLineItem);
+            }
+			var service = new SessionService();
+			Session session=service.Create(options);
+			var orderHeaderToUpdate =  _db.OrderHeaders.Find(ShoppingCartVM.OrderHeader.Id);
+			if (orderHeaderToUpdate != null)
+			{
+				orderHeaderToUpdate.SessionId = session.Id;
+				orderHeaderToUpdate.PaymentIntentId = session.PaymentIntentId;
+
+				_db.OrderHeaders.Update(orderHeaderToUpdate);
+			     _db.SaveChanges();
+                Response.Headers.Add("Location", session.Url);
+                return new StatusCodeResult(303);
+			}
+			//_db.OrderHeaders.Update(ShoppingCartVM.OrderHeader.Id,session.Id)
+            
+			return RedirectToAction("OrderConfirmation", new  { id=ShoppingCartVM.OrderHeader.Id});
+		}
+            
+        public IActionResult OrderConfirmation(int id)
+        {
+            return View(id);  
+        }
+
+	}
 }
