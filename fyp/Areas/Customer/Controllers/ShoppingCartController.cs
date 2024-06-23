@@ -194,6 +194,35 @@ namespace fyp.Areas.Customer.Controllers
             
         public IActionResult OrderConfirmation(int id)
         {
+            OrderHeader? orderHeader = _db.OrderHeaders.Include(a => a.ApplicationUser).FirstOrDefault(u => u.Id == id);
+            var service = new SessionService();
+            Session session = service.Get(orderHeader.SessionId);
+			var getOrderHeader = _db.OrderHeaders.FirstOrDefault(u => u.Id == id);
+
+			if (session.PaymentStatus.ToLower() == "paid")
+            {
+               //var getOrderHeader= _db.OrderHeaders.FirstOrDefault(u => u.Id == id);
+                if(getOrderHeader != null) 
+                { 
+                    getOrderHeader.OrderStatus= session.Status;
+                  //  if(!string.IsNullOrEmpty(session.PaymentStatus)) {
+                        getOrderHeader.PaymentStatus = session.PaymentStatus;
+                  //  }
+                }
+                _db.OrderHeaders.Update(getOrderHeader);
+
+            }
+            // if(!)
+            //getOrderHeader.SessionId = session.ClientReferenceId;
+            getOrderHeader.PaymentIntentId= session.PaymentIntentId;
+            getOrderHeader.PaymentDate = DateTime.Now;
+            _db.OrderHeaders.Update(getOrderHeader);
+            _db.SaveChanges();  
+
+
+            List<ShoppingCart>shoppingCarts= _db.ShoppingCarts.Where(u=>u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
+            _db.ShoppingCarts.RemoveRange(shoppingCarts);
+            _db.SaveChanges();  
             return View(id);  
         }
 
