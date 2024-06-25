@@ -181,6 +181,7 @@ namespace fyp.Areas.Customer.Controllers
 			{
 				orderHeaderToUpdate.SessionId = session.Id;
 				orderHeaderToUpdate.PaymentIntentId = session.PaymentIntentId;
+                //add date here
 
 				_db.OrderHeaders.Update(orderHeaderToUpdate);
 			     _db.SaveChanges();

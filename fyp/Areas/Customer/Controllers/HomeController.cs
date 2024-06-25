@@ -1,7 +1,9 @@
 using fyp.Data;
 using fyp.Models;
+using fyp.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -83,7 +85,60 @@ namespace fyp.Areas.Customer.Controllers
           
             return RedirectToAction("Product");
         }
+     
+        [HttpGet]
+        public IActionResult Selling()
+        {
+           
+            SellingVM sellingVM = new()
+            {
+                AppointmentList = _db.AppointmentSlots.Select(s => new SelectListItem
+                {
+                    Text = $"{s.Date} {s.Time}",
+                    Value = s.Id.ToString()
 
+                }),
+                MetalPurity = new List<SelectListItem>
+                 {
+                  new SelectListItem { Text = "999", Value = "999" },
+                  new SelectListItem { Text = "916", Value = "916" }
+                  },
+            Selling = new Selling()
+            };
+            return View(sellingVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Selling(SellingVM sellingVM)
+        {
+           
+            if (ModelState.IsValid)
+            {
+               
+                _db.Sellings.Add(sellingVM.Selling);
+                _db.SaveChanges();
+                TempData["success"] = "New appointment created successfully.";
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                sellingVM.AppointmentList = _db.AppointmentSlots.Select(s => new SelectListItem
+                {
+                    Text = $"{s.Date} {s.Time}",
+                    Value = s.Id.ToString()
+                });
+                sellingVM.MetalPurity = new List<SelectListItem>
+                  {
+                    new SelectListItem { Text = "999", Value = "999" },
+                     new SelectListItem { Text = "916", Value = "916" }
+                     };
+
+                return View(sellingVM);
+            }
+          
+        }
+       
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fyp.Data;
 
@@ -11,9 +12,11 @@ using fyp.Data;
 namespace fyp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240624133142_addSellingDb")]
+    partial class addSellingDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -512,12 +515,12 @@ namespace fyp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("AppointmentSlotId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductPurity")
                         .IsRequired()
@@ -528,6 +531,8 @@ namespace fyp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("AppointmentSlotId");
 
@@ -678,13 +683,21 @@ namespace fyp.Migrations
 
             modelBuilder.Entity("fyp.Models.Selling", b =>
                 {
-                    b.HasOne("fyp.Models.AppointmentSlot", "ApplicationSlot")
+                    b.HasOne("fyp.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("fyp.Models.AppointmentSlot", "AppointmentSlot")
                         .WithMany()
                         .HasForeignKey("AppointmentSlotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ApplicationSlot");
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("AppointmentSlot");
                 });
 
             modelBuilder.Entity("fyp.Models.ShoppingCart", b =>

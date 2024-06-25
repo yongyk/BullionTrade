@@ -18,8 +18,12 @@ namespace fyp.Data
         public DbSet<ShoppingCart>ShoppingCarts { get; set; } 
         
         public DbSet<OrderHeader> OrderHeaders { get; set; }    
-        public DbSet<OrderDetail> OrderDetails { get; set; }        
+        public DbSet<OrderDetail> OrderDetails { get; set; }    
         
+        public DbSet<AppointmentSlot> AppointmentSlots { get; set; }
+
+        public DbSet<Selling> Sellings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             
@@ -79,6 +83,16 @@ namespace fyp.Data
                       }
             
              );
+            modelBuilder.Entity<AppointmentSlot>().HasData(
+               new AppointmentSlot { Id = 1, Date = "01/06/2024", Time="15:00" },
+               new AppointmentSlot { Id = 2, Date = "02/06/2024", Time = "16:00" },
+               new AppointmentSlot { Id = 3, Date = "03/06/2024", Time = "10:00" },
+               new AppointmentSlot { Id = 4, Date = "04/06/2024", Time = "11:00" }
+
+
+
+
+               );
             modelBuilder.Entity<ShoppingCart>()
        .Property(s => s.Id)
        .ValueGeneratedOnAdd();

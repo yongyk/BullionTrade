@@ -1,0 +1,63 @@
+﻿@model List<OrderHeader>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Order Report</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha384-GLRmJ0G2A8sRtU8V5Fg3GhvfNT0D1yPkaSRmql5IqUl4mknHh3Qn1K1Kt/y+pX0e" crossorigin="anonymous">
+    <style>
+         print {
+            .no-print, .no-print * {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin-top:100px;">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12 text-center mb-4">
+                <img src="~/img/BullionTrade.webp" alt="Company Logo" style="max-height: 100px;" class="float-start" />
+                <h1>Company Name</h1>
+                <h2>Order Report</h2>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th>Phone Number</th>
+                            <th>Payment Status</th>
+                            <th>Order Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td>@order.Id</td>
+                                <td>@order.Name</td>
+                                <td>@order.PhoneNumber</td>
+                                <td>@order.PaymentStatus</td>
+                                <td>@order.OrderTotal.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="row no-print">
+            <div class="col-12 text-end mt-3">
+                <button onclick="window.print()" class="btn btn-primary">Print Report</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha384-tb6ABgNFU4id6INR5neHt9BLzU26n1akOHkWqUQUB7BRm5TC/c8FYQhlO9HQ9Gp3" crossorigin="anonymous"></script>
+</body>
+</html>

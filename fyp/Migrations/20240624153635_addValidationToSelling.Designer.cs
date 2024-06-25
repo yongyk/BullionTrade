@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fyp.Data;
 
@@ -11,9 +12,11 @@ using fyp.Data;
 namespace fyp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240624153635_addValidationToSelling")]
+    partial class addValidationToSelling
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -678,13 +681,13 @@ namespace fyp.Migrations
 
             modelBuilder.Entity("fyp.Models.Selling", b =>
                 {
-                    b.HasOne("fyp.Models.AppointmentSlot", "ApplicationSlot")
+                    b.HasOne("fyp.Models.AppointmentSlot", "AppointmentSlot")
                         .WithMany()
                         .HasForeignKey("AppointmentSlotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ApplicationSlot");
+                    b.Navigation("AppointmentSlot");
                 });
 
             modelBuilder.Entity("fyp.Models.ShoppingCart", b =>

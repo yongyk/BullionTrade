@@ -1,0 +1,66 @@
+﻿@model fyp.Models.ViewModels.SellingVM
+<body style="margin-top:100px;">
+    <form method="post" asp-action="Selling">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="border p-3 mt-4">
+            <div class="row pb-2">
+                <h2>Sell Your Gold</h2>
+                <hr />
+            </div>
+            <input asp-for="Selling.Id"  class="form-control" hidden />
+          @*  <input asp-for="Selling.AppointmentSlot.Id" class="form-control" hidden />*@
+
+            <div class="mb-3 row p-1">
+                <label class="p-0" asp-for="Selling.Email"></label>
+                <input asp-for="Selling.Email" type="text" class="form-control"  />
+                <span asp-validation-for="Selling.Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3 row p-1">
+                <label class="p-0" asp-for="Selling.Weight"></label>
+                <input asp-for="Selling.Weight" type="text" class="form-control" placeholder="24:00" />
+                <span asp-validation-for="Selling.Weight" class="text-danger"></span>
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="Selling.ProductPurity" class="control-label"></label>
+                <select asp-for="Selling.ProductPurity" asp-items="@Model.MetalPurity" class="form-control"></select>
+                <span asp-validation-for="Selling.ProductPurity" class="text-danger"></span>
+            </div>
+            <div class="mb-3 row p-1">
+                <label class="p-0" asp-for="Selling.AppointmentSlotId"></label>
+                <select asp-for="@Model.Selling.AppointmentSlotId" asp-items="@Model.AppointmentList" class="form-control"></select>
+                <span asp-validation-for="Selling.AppointmentSlotId" class="text-danger"></span>
+            </div>
+            @*
+            <div class="mb-3 row p-1">
+                <label class="p-0" asp-for=" Selling.AppointmentDate"></label>
+                <select asp-for="Selling.AppointmentDate" asp-items="@Model.DateList" class="form-control"></select>
+                <span asp-validation-for="Selling.AppointmentDate" class="text-danger"></span>
+            </div>
+            *@
+            <div class="row">
+                <div class="col-6 col-md-3">
+                    <button type="submit" class="btn btn-primary form-control">
+                        Create
+                    </button>
+                </div>
+                @*col-md-3 means that if screen is smaller than medium it will take 3 columns else it will take 6 column*@
+                <div class="col-6 col-md-3">
+                    <a asp-controller="AppointmentSlot" asp-action="Index" class="btn btn-outline-secondary form-control">
+                        Back To List
+                    </a>
+                </div>
+
+
+            </div>
+
+        </div>
+    </form>
+</body>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

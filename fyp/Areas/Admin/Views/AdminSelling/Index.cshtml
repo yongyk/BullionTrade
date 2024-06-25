@@ -1,0 +1,55 @@
+﻿
+@model List<Selling>
+<body style="margin-top:100px;">
+    <div class="container">
+        <div class="row pt-4 pb-3">
+            <div class="col-6">
+                <h2>Category List</h2>
+            </div>
+
+           
+        </div>
+        <table class="table table-bordered table-stripped">
+            <thead>
+                <tr>
+                    <th>
+                        Appointment Id
+                    </th>
+                    <th>
+                        Customer Email
+                    </th>
+                    <th>
+                        Weight Of Gold To Sale
+                    </th>
+                    <th>
+                        Gold Purity
+                    </th>
+                    <th>
+                        Appointment Date
+                    </th>
+                    <th>
+                        Appointment Time
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td>@obj.Id</td>
+                        <td>@obj.Email</td>
+                        <td>@obj.Weight</td>
+                        <td>@obj.ProductPurity</td>
+                        <td>@obj.ApplicationSlot.Date</td>
+                        <td>@obj.ApplicationSlot.Time</td>
+
+
+
+                       
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+

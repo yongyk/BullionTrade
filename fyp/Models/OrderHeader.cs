@@ -11,15 +11,15 @@ namespace fyp.Models
         [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
-        public DateTime OrderDate { get; set; }
-        public DateTime ShippingDate { get; set; }
+        public DateTime OrderDate { get; set; }= DateTime.Now;
+        public DateTime ShippingDate { get; set; } = DateTime.Now;
         public double OrderTotal { get; set; }
         public string? OrderStatus { get; set; }
         public string? PaymentStatus { get; set; }
         public string? TrackingNumber {  get; set; }    
-        public string? Carrier {  get; set; }   
+        public string? Carrier {  get; set; }
         // maybe no need
-        public DateTime PaymentDate { get; set; }   
+        public DateTime PaymentDate { get; set; } = DateTime.Now;   
         public DateOnly PaymentDueDate { get; set; }
 
         //uniquely given by stripe
