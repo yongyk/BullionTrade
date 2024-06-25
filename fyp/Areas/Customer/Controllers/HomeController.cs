@@ -109,6 +109,8 @@ namespace fyp.Areas.Customer.Controllers
         }
 
         [HttpPost]
+        [Authorize]
+
         [ValidateAntiForgeryToken]
         public IActionResult Selling(SellingVM sellingVM)
         {
@@ -138,8 +140,27 @@ namespace fyp.Areas.Customer.Controllers
             }
           
         }
-       
-
+       public IActionResult IndexArticle()
+        {
+            List<Article> getArticle= _db.Articles.ToList();
+            return View(getArticle);
+        }
+        
+        public IActionResult ArticleDetails(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Article? article = _db.Articles.FirstOrDefault(c => c.Id == id);
+            if (article == null)
+            {
+                return NotFound();
+            }
+            return View(article);
+           
+        }
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

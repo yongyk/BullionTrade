@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Product>
+@*
 <body style="margin-top:100px;">
 <div class="row pb-3">
     @foreach(var product in Model)
@@ -35,4 +36,43 @@
     }
 </div>
 
+</body>
+*@
+
+<body style="margin-top:100px;">
+<div class="container">
+    <div class="row">
+        @foreach(var product in Model)
+        {
+            <div class="col-md-3 col-sm-5 mb-3">
+                <div class="card h-85 border-0 shadow-sm">
+                    <!-- Hover effect on the image -->
+                    <div class="card-img-top">
+                        <img src="@product.ImageUrl" alt="@product.Name" class="img-fluid rounded" style="transition: transform .2s;">
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="text-muted">@product.Price.ToString("c")</p>
+                            <a asp-action="Details"
+                               asp-route-id="@product.Id" class="btn btn-outline-primary stretched-link">View Details</a>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <small class="text-muted">Category: @product.Category.Name</small>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 20px rgba(0,0,0,.25);
+    }
+
+    .card-img-top img:hover {
+        transform: scale(1.05);
+    }
+</style>
 </body>

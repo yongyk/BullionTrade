@@ -1,5 +1,5 @@
 ﻿@model ShoppingCart
-
+@*
 <form method="post">
     <input asp-for="ProductId" hidden />
     <div class="card shadow border-0 mt-4">
@@ -37,6 +37,7 @@
                                 </span>
                             </h6>
                         </div>
+                        *@
                         @*
                         <div class="row text-center ps-2">
                             <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
@@ -66,6 +67,7 @@
                                 <div>Price100</div>
                             </div>
                             *@
+                            @*
                         </div>
                         <div class="row pl-2 my-3">
                         <p class="text-secondary lh-sm">@Html.Raw(Model.Product.Description)</p>
@@ -108,3 +110,111 @@
         </div>
     </div>
 </form>
+*@
+
+
+@*
+<form method="post">
+    <input asp-for="ProductId" hidden />
+    <body style="margin-top:120px;"></body>
+    <!-- Main card for product details -->
+    
+        
+        <div class="card-body">
+            <!-- Row for image and quick details -->
+            <div class="row">
+                <div class="col-md-5">
+                    <img src="@Model.Product.ImageUrl" alt="Image of @Model.Product.Name" class="img-fluid rounded">
+                </div>
+                <div class="col-md-7">
+                    <h3 class="text-primary">@Model.Product.Price.ToString("C")</h3>
+                    <span class="badge bg-secondary">@Model.Product.Category.Name</span>
+
+                    <p class="mt-3">@Html.Raw(Model.Product.Description)</p>
+                    <div>
+                        <span class="text-muted">Brand: @Model.Product.ProductBrand</span><br>
+                        <span class="text-muted">Metal: @Model.Product.ProductMetal</span><br>
+                        <span class="text-muted">Purity: @Model.Product.ProductPurity</span><br>
+                        <span class="text-muted">Quantity Available: @Model.Product.Quantity</span>
+                    </div>
+
+                    <!-- Quantity and Add to Cart -->
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary text-white">Count</span>
+                                <input asp-for="Count" type="number" value="1" class="form-control" aria-label="Quantity">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary bg-gradient w-100">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to home link -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <a href="/" class="btn btn-outline-light bg-gradient">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+*@
+
+
+<body style="margin-top:120px">
+<form method="post">
+    <input asp-for="ProductId" hidden />
+
+    <!-- Main card for product details with a new layout and more distinct styling -->
+    <div class="card border-0 mt-5 shadow-lg">
+        <div class="card-header ">
+        </div>
+        
+        <div class="card-body bg-light">
+            <div class="row g-4">
+                <!-- Swap image and details sides -->
+                <div class="col-lg-7">
+                    <h4 class="text-success">@Model.Product.Price.ToString("C")</h4>
+                    <span class="badge bg-info">@Model.Product.Category.Name</span>
+
+                    <!-- Use a more narrative style for the description -->
+                    <p class="mt-4 fst-italic">@Html.Raw(Model.Product.Description)</p>
+
+                    <div class="text-secondary">
+                        <p>Brand: @Model.Product.ProductBrand</p>
+                        <p>Metal: @Model.Product.ProductMetal</p>
+                        <p>Purity: @Model.Product.ProductPurity</p>
+                       @* <p>Available: @Model.Product.Quantity units</p>*@
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <img src="@Model.Product.ImageUrl" alt="Image of @Model.Product.Name" class="img-fluid rounded">
+                </div>
+            </div>
+
+            <!-- Enhanced interaction area -->
+            <div class="row mt-3 align-items-center">
+                <div class="col-md-3">
+                    <div class="input-group mb-3">
+                        <input asp-for="Count" type="number" class="form-control text-center" aria-label="Quantity" value="1">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-warning bg-gradient w-100">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modified footer link -->
+        <div class="card-footer bg-transparent border-0">
+            <div class="text-center">
+                <a href="/" class="btn btn-outline-primary w-20">Explore More Products</a>
+            </div>
+        </div>
+    </div>
+</form>
+</body>

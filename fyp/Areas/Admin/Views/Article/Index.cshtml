@@ -1,0 +1,49 @@
+﻿@model List<Article>
+<body style="margin-top:100px;">
+    <div class="container">
+        <div class="row pt-4 pb-3">
+            <div class="col-6">
+                <h2>Article List</h2>
+            </div>
+
+            <div class="col-6 text-end">
+                <a asp-controller="Article" asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Create new Article
+                </a>
+            </div>
+        </div>
+        <table class="table table-bordered table-stripped">
+            <thead>
+                <tr>
+                    <th>
+                        Article Id
+                    </th>
+                    <th>
+                        Article Title
+                    </th>
+                    <th>
+                        Article Author
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td>@obj.Id</td>
+                        <td>@obj.Title</td>
+                        <td>@obj.Author</td>
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                               
+                                <a asp-controller="Article" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2">
+                                    <i class="bi bi-pen"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>

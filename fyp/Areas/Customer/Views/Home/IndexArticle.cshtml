@@ -1,0 +1,57 @@
+﻿@model List<Article>
+<form method="post">
+<body style="margin-top:150px">
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var article in Model)
+        {
+            @*
+            <div class="col-md-4">
+                <div class="card mb-4 ">
+                    <div class="card-body ">
+                        <h5 class="card-title">@article.Title</h5>
+                        <p class="card-text">By @article.Author</p>
+                        <a href="@Url.Action("Details", "Articles", new { id = article.Id })" class="btn btn-primary">Read more</a>
+                    </div>
+                </div>
+            </div>
+            *@
+            @*
+                <div class="col-12">
+                    <!-- Changed from col-md-4 to col-12 to take full width -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <h5 class="card-title">@article.Title</h5>
+                            <p class="card-text">By @article.Author</p>
+                            <a href="@Url.Action("Details", "Articles", new { id = article.Id })" class="btn btn-primary">Read more</a>
+                        </div>
+                    </div>
+                </div>
+                *@
+
+                <div class="col-12">
+                    <!-- Full width for each card -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <!-- New row for image and text alignment -->
+                                <!-- Image Column -->
+                                <div class="col-md-3">
+                                    <img src="~/img/BullionTrade.webp" alt="Image Description" class="img-fluid rounded"> <!-- Ensure article has ImageUrl -->
+                                </div>
+                                <!-- Text Column -->
+                                <div class="col-md-9">
+                                    <h5 class="card-title">@article.Title</h5>
+                                    <p class="card-text">By @article.Author</p>
+                                    <button asp-action="ArticleDetails" asp-route-Id="@article.Id"  class="btn btn-primary">Read more</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        }
+    </div>
+</div>
+</body>
+</form>

@@ -1,0 +1,43 @@
+﻿@model Article
+<form method="post">
+<body style="margin-top:150px">
+    <div class="container mt-4">
+        <div class="card">
+            <img src="~/img/BullionTrade.webp" alt="@Model.Title" class="card-img-top img-fluid">  <!-- Article image at the top -->
+            <div class="card-body">
+                <h2 class="card-title">@Model.Title</h2>
+                <p class="card-text">@Model.Content</p>
+                <p class="card-text">By @Model.Author on @Model.DateCreated</p>
+                <!-- Like and Share buttons -->
+                <button id="likeButton" class="btn btn-success" onclick="likeArticle('@Model.Id')">Like</button>
+               @* <button class="btn btn-primary" onclick="shareArticle('@Model.Title', '@Model.Url')">Share</button>*@
+            </div>
+        </div>
+    </div>
+    <script>
+        function likeArticle(articleId) {
+            // Send AJAX POST request to like the article
+            fetch('/Articles/Like/' + articleId, {
+                method: 'POST'
+            }).then(response => response.json())
+                .then(data => {
+                    alert('Thanks for liking!');
+                });
+        }
+
+        function shareArticle(title, url) {
+            // Example sharing logic, update according to your actual sharing mechanism
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    url: url
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                }).catch(console.error);
+            } else {
+                prompt('Copy this link to share:', url);
+            }
+        }
+    </script>
+</body>
+</form>
