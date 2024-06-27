@@ -1,5 +1,7 @@
-﻿using fyp.Data;
+﻿
+using fyp.Data;
 using fyp.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace fyp.Areas.Admin.Controllers
@@ -8,9 +10,12 @@ namespace fyp.Areas.Admin.Controllers
     public class ArticleController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public ArticleController(ApplicationDbContext db)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public ArticleController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -19,15 +24,40 @@ namespace fyp.Areas.Admin.Controllers
         }
         public IActionResult Create()
         {
-            return View();
+            Article model = new Article(); // Ensure it is initialized
+
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult Create(Article obj)
+        public IActionResult Create(Article obj, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
-              //  obj.DateCreated = DateTime.Now.ToString("yyyy-MM-dd"); 
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    // string productPath= Path.Combine(wwwRootPath, fileName);
+                    string productPath = Path.Combine(wwwRootPath, @"images\article");
+                    if (!string.IsNullOrEmpty(obj.ImageUrl))
+                    {
+                        var oldImagePath =
+                           Path.Combine(wwwRootPath, obj.ImageUrl.TrimStart('\\'));
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    obj.ImageUrl = @"\images\article\" + fileName;
+                    ;
+                }
+                //  obj.DateCreated = DateTime.Now.ToString("yyyy-MM-dd"); 
                 _db.Articles.Add(obj);
                 _db.SaveChanges();
                 TempData["success"] = "Article created successfully";
@@ -88,6 +118,19 @@ namespace fyp.Areas.Admin.Controllers
             {
                 return NotFound();
 
+            }
+            
+            var productToBeDeleted = _db.Articles.FirstOrDefault(u => u.Id == id);
+            if (productToBeDeleted == null)
+            {
+                return NotFound();
+            }
+            
+            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDeleted.ImageUrl.TrimStart('\\'));
+
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
             }
 
             _db.Articles.Remove(obj);

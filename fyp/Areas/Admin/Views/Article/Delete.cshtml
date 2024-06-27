@@ -7,7 +7,8 @@
                 <h2>Delete Article</h2>
                 <hr />
             </div>
-
+            <div class="row">
+                <div class="col-10">
             <div class="mb-3 row p-1">
                 <label class="p-0" asp-for="Title"></label>
                 <input asp-for="Title" type="text" class="form-control" disabled />
@@ -39,7 +40,12 @@
 
 
             </div>
+            </div>
+            
+            <div class="col-2">
+                <img src="@Model.ImageUrl" width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
 
-        </div>
+            </div>
+           
     </form>
 </body>

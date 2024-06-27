@@ -95,7 +95,7 @@ namespace fyp.Data
             modelBuilder.Entity<Article>().HasData(
                 new Article { Id = 1, Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae turpis massa sed elementum tempus egestas sed sed risus. Nunc vel risus commodo viverra maecenas accumsan lacus. " +
                 "Venenatis lectus magna fringilla urna. Faucibus turpis in eu mi bibendum neque. Augue eget arcu dictum varius duis at consectetur lorem donec. Nisl pretium fusce id velit. Diam in arcu cursus euismod quis viverra. Nunc sed augue lacus viverra vitae congue eu consequat. Auctor elit sed vulputate mi sit amet mauris. Est pellentesque elit ullamcorper dignissim cras tincidunt. Ut tristique et egestas quis ipsum suspendisse ultrices gravida dictum. Id nibh tortor id aliquet lectus proin nibh." +
-                " Nisl rhoncus mattis rhoncus urna neque viverra justo nec. Amet nisl suscipit adipiscing bibendum est ultricies integer quis auctor. Augue mauris augue neque gravida in. Pharetra magna ac placerat vestibulum lectus mauris ultrices. Lobortis mattis aliquam faucibus purus in massa tempor." , DateCreated = "01/06/2024", Author= "Richard", Title=" Gold & Silver will outperform stocks, Real Estate" },
+                " Nisl rhoncus mattis rhoncus urna neque viverra justo nec. Amet nisl suscipit adipiscing bibendum est ultricies integer quis auctor. Augue mauris augue neque gravida in. Pharetra magna ac placerat vestibulum lectus mauris ultrices. Lobortis mattis aliquam faucibus purus in massa tempor." , DateCreated = "01/06/2024", Author= "Richard", Title=" Gold & Silver will outperform stocks, Real Estate", ImageUrl="" },
                   new Article
                   {
                       Id = 2,
@@ -104,7 +104,8 @@ namespace fyp.Data
                 " Nisl rhoncus mattis rhoncus urna neque viverra justo nec. Amet nisl suscipit adipiscing bibendum est ultricies integer quis auctor. Augue mauris augue neque gravida in. Pharetra magna ac placerat vestibulum lectus mauris ultrices. Lobortis mattis aliquam faucibus purus in massa tempor.",
                       DateCreated = "02/06/2024",
                       Author = "Ali",
-                      Title = " Gold & Silver will outperform stocks, Real Estate 2"
+                      Title = " Gold & Silver will outperform stocks, Real Estate 2",
+                      ImageUrl=""
                   },
                     new Article
                     {
@@ -114,7 +115,8 @@ namespace fyp.Data
                 " Nisl rhoncus mattis rhoncus urna neque viverra justo nec. Amet nisl suscipit adipiscing bibendum est ultricies integer quis auctor. Augue mauris augue neque gravida in. Pharetra magna ac placerat vestibulum lectus mauris ultrices. Lobortis mattis aliquam faucibus purus in massa tempor.",
                         DateCreated = "03/06/2024",
                         Author = "Abu",
-                        Title = " Gold & Silver will outperform stocks, Real Estate 3"
+                        Title = " Gold & Silver will outperform stocks, Real Estate 3",
+                        ImageUrl=""
                     }
                 );
 

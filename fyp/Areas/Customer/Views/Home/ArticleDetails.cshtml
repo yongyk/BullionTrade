@@ -2,17 +2,23 @@
 <form method="post">
 <body style="margin-top:150px">
     <div class="container mt-4">
-        <div class="card">
-            <img src="~/img/BullionTrade.webp" alt="@Model.Title" class="card-img-top img-fluid">  <!-- Article image at the top -->
-            <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+        <div class="card" >
+            <div class="text-center">
+                    <img src="@Model.ImageUrl" alt="@Model.Title" class="card-img-top mx-auto d-block img-fluid" style="max-width: 30%; height:auto;">  <!-- Article image at the top -->
+                </div>
+            <div class="card-body text-center">
                 <h2 class="card-title">@Model.Title</h2>
-                <p class="card-text">@Model.Content</p>
+                <p class="card-text">@Html.Raw(Model.Content)</p>
                 <p class="card-text">By @Model.Author on @Model.DateCreated</p>
                 <!-- Like and Share buttons -->
                 <button id="likeButton" class="btn btn-success" onclick="likeArticle('@Model.Id')">Like</button>
                @* <button class="btn btn-primary" onclick="shareArticle('@Model.Title', '@Model.Url')">Share</button>*@
             </div>
-        </div>
+            </div>
+            </div>
+            </div>
     </div>
     <script>
         function likeArticle(articleId) {
