@@ -54,9 +54,8 @@ button.accept-policy {
 }
 
 .navbar {
-   /* height: 90px; /* Increase the height as needed */
+    /* height: 90px; /* Increase the height as needed */
     z-index: 1030;
-    overflow:hidden !important
 }
 
 .navbar-nav .nav-link {
