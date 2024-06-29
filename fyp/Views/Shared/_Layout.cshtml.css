@@ -54,14 +54,16 @@ button.accept-policy {
 }
 
 .navbar {
-    height: 90px; /* Increase the height as needed */
+   /* height: 90px; /* Increase the height as needed */
     z-index: 1030;
+    overflow:hidden !important
 }
 
 .navbar-nav .nav-link {
-    line-height: 56px; /* Adjust this value based on your navbar's height */
+    line-height: 56px;
+    /* Adjust this value based on your navbar's height */
     /* Alternatively, use padding */
-    padding-top: 15px;
+    /*padding-top: 15px;*/
     padding-bottom: 15px;
 }
 .navbar-toggler {

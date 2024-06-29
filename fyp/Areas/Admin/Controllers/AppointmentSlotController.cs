@@ -1,10 +1,13 @@
 ﻿using fyp.Data;
 using Microsoft.AspNetCore.Mvc;
 using fyp.Models;
+using Microsoft.AspNetCore.Authorization;
+using fyp.Utility;
 
 namespace fyp.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class AppointmentSlotController : Controller
     {
         private readonly ApplicationDbContext _db;

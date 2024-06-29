@@ -4,9 +4,13 @@ using fyp.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using fyp.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using fyp.Utility;
+using Microsoft.AspNetCore.Authorization;
 namespace fyp.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
+
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _db;

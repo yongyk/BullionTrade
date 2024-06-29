@@ -1,12 +1,15 @@
 ﻿
 using fyp.Data;
 using fyp.Models;
+using fyp.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace fyp.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles =SD.Role_Admin)]
     public class ArticleController : Controller
     {
         private readonly ApplicationDbContext _db;

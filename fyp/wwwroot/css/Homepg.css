@@ -95,3 +95,35 @@ section{
     transform: translate(-50%, -50%);
     text-align: center;
 }
+/*
+.carousel-item img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio 
+}
+    */
+
+/*
+.carousel {
+    width: 100vw;
+    position: relative; 
+    left: 50%;
+    right: 50%;
+    transform: translateX(-50%);
+    height:100px;
+}
+    */
+
+.carousel {
+    width: 100vw;
+   /* height: 70vh;*/ /* 50% of the viewport height */
+    position: relative;
+    left: 50%;
+    right: 50%;
+    transform: translateX(-50%);
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    /*vertical-align: middle;*/
+}

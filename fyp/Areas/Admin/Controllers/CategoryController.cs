@@ -1,10 +1,14 @@
 ﻿using fyp.Data;
 using Microsoft.AspNetCore.Mvc;
 using fyp.Models;
+using fyp.Utility;
+using Microsoft.AspNetCore.Authorization;
 
 namespace fyp.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
+
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _db;
