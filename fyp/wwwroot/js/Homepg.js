@@ -17,4 +17,3 @@ const hiddenElements = document.querySelectorAll('.hidden');
 
 hiddenElements.forEach((el) => observer.observe(el));
 
-document.write("<h1>Hello world</h1> ");
