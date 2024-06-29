@@ -35,9 +35,7 @@ section{
     z-index: 1000;
 }
 
-.container-fluid {
-    overflow-x: hidden; /* This can disrupt sticky positioning */
-}
+
 
 
 .hidden {
