@@ -4,6 +4,7 @@ using fyp.Data;
 using fyp.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Stripe;
+using fyp.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -25,6 +26,12 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = $"/Identity/Account/Logout";
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
+
+builder.Services.AddHttpClient<GoldPriceService>();
+
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<GoldPriceService>();
+
 
 var app = builder.Build();
 
