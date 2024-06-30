@@ -29,9 +29,14 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddHttpClient<GoldPriceService>();
 
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("GoldAPI", client =>
+{
+    client.BaseAddress = new Uri("https://www.goldapi.io/api/");
+    client.DefaultRequestHeaders.Add("x-access-token", "goldapi-3phepsly1epmz2-io");
+}
+    );
 builder.Services.AddScoped<GoldPriceService>();
-
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

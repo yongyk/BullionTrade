@@ -9,10 +9,13 @@ namespace fyp.Services
     public class GoldPriceService
     {
         private readonly HttpClient _httpClient;
+        
         private readonly string _apiKey = "LEW5WUUEX0P90ID9";
-        public GoldPriceService(HttpClient httpClient)
+        public GoldPriceService(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            // _httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient("GoldAPI");
+
         }
         /*
         public async Task<decimal> GetGoldPriceAsync()
@@ -36,10 +39,11 @@ namespace fyp.Services
 
     }
         */
-
+        /*
         public async Task<Dictionary<DateTime, decimal>> GetGoldPriceIntradayAsync()
         {
             string url = $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=GLD&interval=1min&outputsize=full&apikey=LEW5WUUEX0P90ID9";
+            //string url = $"https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=USD&to_currency=XAG&apikey=NTQYM9KPELQQ7WEU";
             var response = await _httpClient.GetAsync(url);
             var pricePoints = new Dictionary<DateTime, decimal>();
 
@@ -58,6 +62,25 @@ namespace fyp.Services
                 }
             }
             return pricePoints;
+        }
+        */
+        public async Task<decimal> GetGoldPriceAsync(string symbol = "XAU", string currency = "USD", string date = null)
+        {
+            string url = $"{symbol}/{currency}";
+            if (!string.IsNullOrEmpty(date))
+            {
+                url += $"/{date}";
+            }
+
+            var response = await _httpClient.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var jsonDocument = JsonDocument.Parse(content);
+                var price = jsonDocument.RootElement.GetProperty("price").GetDecimal();
+                return price;
+            }
+            throw new Exception("Failed to fetch gold price.");
         }
 
     }
