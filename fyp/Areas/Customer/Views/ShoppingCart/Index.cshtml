@@ -127,9 +127,12 @@
                             <h5>Total (RM)</h5>
                             <h3>@Model.OrderHeader.OrderTotal.ToString("c")</h3>
                         </div>
+                         @if (Model.ShoppingCartList.Any())
+                         {
                         <div class="col-md-4 text-right">
                             <a asp-action="Summary" class="btn btn-primary">Proceed to Summary</a>
                         </div>
+                         }
                     </div>
                 </div>
             </div>

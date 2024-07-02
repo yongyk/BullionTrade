@@ -31,7 +31,7 @@ namespace fyp.Models
         public string ProductPurity { get; set; }
 
         [DisplayName("Available Quantity")]
-        [Range(0, 1000, ErrorMessage = "Quantity must be non-negative")]
+        [Range(1, 200, ErrorMessage = "Quantity must be non-negative")]
         public int Quantity { get; set; }
     }
 }

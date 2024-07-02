@@ -17,6 +17,8 @@ namespace fyp.Models
         [ForeignKey("ProductId")]
         [ValidateNever]
         public Product Product { get; set; }
+        [Range(1, 1000, ErrorMessage = "INvalid Quantity")]
+
         public int Count { get; set; }  
         //to protect the price of product from increase when check out
         public double Price { get; set; }   

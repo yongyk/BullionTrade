@@ -11,7 +11,8 @@ using System.Security.Claims;
 namespace fyp.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin)]
+	// [Authorize(Roles = SD.Role_Admin)]
+	[Authorize]
     public class OrderController : Controller
 	{
 		private readonly ApplicationDbContext _db;

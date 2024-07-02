@@ -1,4 +1,4 @@
-﻿
+﻿@using fyp.Utility
 <body style="margin-top:100px;">
     <div class="container">
         <div class="row pt-4 pb-3">
@@ -10,11 +10,14 @@
            
         </div>
       @* <button asp-action="OrderReport" class="btn btn-primary float-end pb-3 pt-4" style="width:15%; height:15px; padding-bottom:10px;" > Order Report</button>*@
-        <div class="col-6 text-end float-end">
-            <a asp-controller="Order" asp-action="OrderReport" class="btn btn-primary">
+        @if (User.IsInRole(SD.Role_Admin))
+        {
+            <div class="col-6 text-end float-end">
+                <a asp-controller="Order" asp-action="OrderReport" class="btn btn-primary">
                 <i class="bi bi-card-list"></i> Generate Order Report
             </a>
         </div>
+        }
         <table id="myTable" class="table table-bordered table-stripped" style="width:100%">
             <thead>
                 <tr>
