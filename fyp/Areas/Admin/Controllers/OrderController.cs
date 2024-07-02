@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using System.Security.Claims;
 
 namespace fyp.Areas.Admin.Controllers
@@ -35,7 +36,19 @@ namespace fyp.Areas.Admin.Controllers
 				OrderHeader = _db.OrderHeaders.Include("ApplicationUser").FirstOrDefault(u => u.Id == orderId),
 				OrderDetail = _db.OrderDetails.Where(u => u.OrderHeaderId == orderId).Include("Product").ToList()
 			};
-			return View(OrderVM);
+            var orderHeader = _db.OrderHeaders.Include("ApplicationUser").FirstOrDefault(u => u.Id == orderId);
+            var orderDetails = _db.OrderDetails.Where(u => u.OrderHeaderId == orderId).Include("Product").ToList();
+            if (orderHeader == null)
+            {
+                return NotFound();
+            }
+
+            OrderVM orderVM = new OrderVM
+            {
+                OrderHeader = orderHeader,
+                OrderDetail = orderDetails
+            };
+            return View(OrderVM);
 		}
 
 
@@ -58,7 +71,22 @@ namespace fyp.Areas.Admin.Controllers
 			TempData["Success"] = "Order details Updated successfully";
 			return RedirectToAction(nameof(Details), new {orderId= getOrderHeader});
         }
+        
+		[HttpPost]
+        [Authorize(Roles = SD.Role_Admin)]
+        public IActionResult ShipOrder()
+		{
+            var getOrderHeader = _db.OrderHeaders.FirstOrDefault(u => u.Id == OrderVM.OrderHeader.Id);
+			getOrderHeader.TrackingNumber= OrderVM.OrderHeader.TrackingNumber;
+			getOrderHeader.Carrier= OrderVM.OrderHeader.Carrier;
+			getOrderHeader.ShippingDate = DateTime.Now;
 
+        
+        _db.OrderHeaders.Update(getOrderHeader);
+			_db.SaveChanges();
+			TempData["Success"] = "Order details Updated successfully";
+			return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
+    }
         public IActionResult OrderReport()
 		{
             List<OrderHeader> orderHeaderList = _db.OrderHeaders.Include(p => p.ApplicationUser).ToList();

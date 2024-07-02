@@ -28,6 +28,7 @@
     </style>
 </head>
 <body>
+    @*
     <header>
         <nav class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow ">
             <div class="container-fluid">
@@ -69,7 +70,7 @@
                         </li>
                         @if(User.IsInRole(SD.Role_Admin))
                         {
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" style="float:right !important;">
 
                             <a class="nav-link dropdown-toggle text-white-50" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Content Management
@@ -95,6 +96,76 @@
             </div>
         </nav>
     </header>
+    *@
+
+    <header>
+        <nav class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/img/BullionTrade.webp" width="80px;" height="75px;" />
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Order</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="GoldPrice" asp-action="Index">Real Gold Price</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Product">Product</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="PredictedPrice" asp-action="Index">Get Predicted Price</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Selling">Sell</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="IndexArticle">Read Article</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="ShoppingCart" asp-action="Index">
+                                <i class="bi bi-cart"></i> &nbsp;
+                            </a>
+                        </li>
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white-50" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Content Management
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index" style="color:black;">Category</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index" style="color:black;">Product</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="AppointmentSlot" asp-action="Index" style="color:black;">Appointment Slot</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="AdminSelling" asp-action="Index" style="color:black;">Customer Appointment</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Article" asp-action="Index" style="color:black;">Article Management</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register" style="color:black;">Create Admin</a></li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                  @*  <ul class="navbar-nav">*@
+                      @*  <li class="nav-item">*@
+                            <partial name="_LoginPartial" />
+                        
+                      
+                   
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+   
     <div class="container">
         <main role="main" class="pb-3">
             <partial name="_Notification" />
