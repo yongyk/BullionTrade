@@ -5,6 +5,8 @@ using fyp.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Stripe;
 using fyp.Services;
+using EmailService = fyp.Services.EmailSender;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -17,7 +19,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IEmailSender, EmailSender>();
+
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -38,6 +40,7 @@ builder.Services.AddHttpClient("GoldAPI", client =>
 builder.Services.AddScoped<GoldPriceService>();
 builder.Services.AddHttpClient();
 
+builder.Services.AddSingleton<EmailService>();
 var app = builder.Build();
 
 

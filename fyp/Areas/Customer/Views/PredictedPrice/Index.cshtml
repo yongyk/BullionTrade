@@ -1,4 +1,11 @@
-﻿<body style="margin-top:100px;">
+﻿
+<head>
+   @* <link rel="stylesheet" href="~/css/CustSelling.css" />*@
+</head>
+
+<body style="margin-top:100px;">
+
+    @*
     @{
         ViewData["Title"] = "Gold Price Prediction";
     }
@@ -8,4 +15,43 @@
         Click the link below to view the gold price predictions for the next 100 days:
     </p>
     <a href="http://localhost:5000/predict" target="_blank">View Predictions</a>
+    *@
+    @*
+    @{
+        ViewData["Title"] = "Gold Price Predictions";
+    }
+
+    <div class="container mt-5">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                @Html.Raw(ViewData["Predictions"])
+            </div>
+        </div>
+
+
+    </div>
+    
+    *@
+
+    @{
+        ViewData["Title"] = "Gold Price Predictions";
+    }
+
+    <div class="container mt-5">
+        <h1 class="text-center">Predicted Prices for the Next 100 Days</h1>
+
+        <div class="card mt-4">
+            <div class="card-body table-responsive">
+                @Html.Raw(ViewData["Predictions"])
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-primary">Back to Home</a>
+        </div>
+    </div>
+
+
 </body>

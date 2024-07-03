@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace fyp.Models.ViewModels
 {
@@ -15,6 +16,8 @@ namespace fyp.Models.ViewModels
 
         public IEnumerable<SelectListItem> MetalPurity { get; set; }
         [ValidateNever]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+
         public string Email {  get; set; }  
     }
 }

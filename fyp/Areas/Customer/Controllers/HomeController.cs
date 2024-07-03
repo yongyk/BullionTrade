@@ -1,6 +1,7 @@
 using fyp.Data;
 using fyp.Models;
 using fyp.Models.ViewModels;
+using fyp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,11 +17,13 @@ namespace fyp.Areas.Customer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _db;
+        private readonly EmailSender _emailSender;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext db, EmailSender emailSender)
         {
             _logger = logger;
             _db = db;
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -120,6 +123,13 @@ namespace fyp.Areas.Customer.Controllers
                
                 _db.Sellings.Add(sellingVM.Selling);
                 _db.SaveChanges();
+
+                // Send confirmation email
+                /*
+                string subject = "Appointment Confirmation";
+                string message = "Your appointment for selling gold has been confirmed ";
+                var task = _emailSender.SendEmailAsync(sellingVM.Selling.Email, subject, message);
+                task.Wait();
                 TempData["success"] = "New appointment created successfully.";
                 return RedirectToAction("Index", "Home");
             }
@@ -137,7 +147,39 @@ namespace fyp.Areas.Customer.Controllers
                      };
 
                 return View(sellingVM);
+                */
+                // Send confirmation email
+                string subject = "Appointment Confirmation";
+                string message = $"Your appointment for selling gold has been confirmed.";
+
+                try
+                {
+                    Task.Run(() => _emailSender.SendEmailAsync(sellingVM.Selling.Email, subject, message)).Wait();
+                    TempData["success"] = "New appointment created successfully.";
+                }
+                catch (Exception)
+                {
+                    TempData["error"] = "Appointment created, but failed to send confirmation email.";
+                }
+
+                return RedirectToAction("Index", "Home");
             }
+            else
+            {
+                sellingVM.AppointmentList = _db.AppointmentSlots.Select(s => new SelectListItem
+                {
+                    Text = $"{s.Date} {s.Time}",
+                    Value = s.Id.ToString()
+                });
+                sellingVM.MetalPurity = new List<SelectListItem>
+        {
+            new SelectListItem { Text = "999", Value = "999" },
+            new SelectListItem { Text = "916", Value = "916" }
+        };
+
+                return View(sellingVM);
+            }
+                
           
         }
        public IActionResult IndexArticle()
