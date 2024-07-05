@@ -14,7 +14,7 @@ namespace fyp.Models
         public string Name { get; set; }
         public string Description { get; set; }
         [Required]
-        [Range(1,10000000)]
+        [Range(1,10000)]
         public double Price { get; set; }
 
         public int CategoryId { get; set; }
@@ -23,7 +23,7 @@ namespace fyp.Models
         [ValidateNever]
         public Category Category { get; set; }
         //linking to other table (Category table)
-        [ValidateNever]
+        [Required]
         public string ImageUrl { get; set; }
 
         public string ProductBrand { get; set; }
@@ -31,7 +31,7 @@ namespace fyp.Models
         public string ProductPurity { get; set; }
 
         [DisplayName("Available Quantity")]
-        [Range(1, 200, ErrorMessage = "Quantity must be non-negative")]
+        [Range(1, 200, ErrorMessage = "Invalid Quantity")]
         public int Quantity { get; set; }
     }
 }

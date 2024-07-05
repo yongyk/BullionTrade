@@ -11,7 +11,7 @@ namespace fyp.Models
         [Required(ErrorMessage = "Weight is required")]
         public string Weight { get; set; }
         [Required(ErrorMessage = "Product Purity is required")]
-
+        [DisplayName("Product Purity")]
         public string ProductPurity { get; set; }
 
 
@@ -20,11 +20,13 @@ namespace fyp.Models
 
         public string Email { get; set; }
 
-       
+        [DisplayName("Appointment Slot")]
+
         [ValidateNever]
         public int AppointmentSlotId { get; set; }
         [ForeignKey("AppointmentSlotId")]
         [ValidateNever]
+
         public AppointmentSlot ApplicationSlot { get; set; }
       
         [NotMapped]

@@ -43,7 +43,7 @@ namespace fyp.Areas.Admin.Controllers
                     Text = u.Name,
                     Value = u.Id.ToString()
                 }),
-                BrandList = new List<SelectListItem>  // Example hardcoded list
+                BrandList = new List<SelectListItem> 
         {
             new SelectListItem{ Text="Pamp", Value="Pamp"},
             new SelectListItem{ Text="Valcambi", Value="Valcambi"},
@@ -135,6 +135,28 @@ namespace fyp.Areas.Admin.Controllers
                     Text = u.Name,
                     Value = u.Id.ToString()
                 });
+
+                prod.BrandList = new List<SelectListItem>
+              {
+            new SelectListItem{ Text="Pamp", Value="Pamp"},
+            new SelectListItem{ Text="Valcambi", Value="Valcambi"},
+            new SelectListItem{ Text="RCM", Value="RCM"},
+             new SelectListItem{ Text="PerthMint", Value="PerthMint"},
+
+
+
+        };
+                prod.MetalList = new List<SelectListItem>
+        {
+            new SelectListItem{ Text="Gold", Value="Gold"},
+            new SelectListItem{ Text="Silver", Value="Silver"},
+            new SelectListItem{ Text="Bronze", Value="Bronze"}
+        };
+                prod.PurityList = new List<SelectListItem>
+        {
+            new SelectListItem{ Text="999", Value="999"},
+            new SelectListItem{ Text="916", Value="916"}
+        };
 
 
                 return View(prod);
@@ -242,15 +264,15 @@ namespace fyp.Areas.Admin.Controllers
                 _db.SaveChanges();
                 return Json(new { success = true, message = "Delete successful" });
             }
-            /*
-            catch (Exception ex)
-            {
-                _logger.LogError("Error deleting product with ID {ProductId}: {Error}", id, ex.Message);
-                return Json(new { success = false, message = $"Error while deleting: {ex.Message}" });
-            }
-            */
+        /*
+        catch (Exception ex)
+        {
+            _logger.LogError("Error deleting product with ID {ProductId}: {Error}", id, ex.Message);
+            return Json(new { success = false, message = $"Error while deleting: {ex.Message}" });
         }
-        #endregion
-
+        */
     }
+    #endregion
+
+}
 //}

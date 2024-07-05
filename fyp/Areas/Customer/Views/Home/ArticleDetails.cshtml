@@ -11,7 +11,7 @@
             <div class="card-body text-center">
                 <h2 class="card-title">@Model.Title</h2>
                 <p class="card-text">@Html.Raw(Model.Content)</p>
-                <p class="card-text">By @Model.Author on @Model.DateCreated</p>
+                <p class="card-text" style="font-weight:bold;">By @Model.Author on @Model.DateCreated</p>
                 <!-- Like and Share buttons -->
                             <button id="likeButton" class="btn btn-success" asp-area="Customer" asp-controller="Home" asp-action="IndexArticle">Back
                                 @*<a asp-area="Customer" asp-controller="Home" asp-action="IndexArticle">Back</a>*@</button>
@@ -21,30 +21,6 @@
             </div>
             </div>
     </div>
-    <script>
-        function likeArticle(articleId) {
-            // Send AJAX POST request to like the article
-            fetch('/Articles/Like/' + articleId, {
-                method: 'POST'
-            }).then(response => response.json())
-                .then(data => {
-                    alert('Thanks for liking!');
-                });
-        }
-
-        function shareArticle(title, url) {
-            // Example sharing logic, update according to your actual sharing mechanism
-            if (navigator.share) {
-                navigator.share({
-                    title: title,
-                    url: url
-                }).then(() => {
-                    console.log('Thanks for sharing!');
-                }).catch(console.error);
-            } else {
-                prompt('Copy this link to share:', url);
-            }
-        }
-    </script>
+    
 </body>
 </form>

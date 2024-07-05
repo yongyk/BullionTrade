@@ -24,12 +24,18 @@
             </div>
             <div class="mb-3 row p-1">
                 <label asp-for="Selling.ProductPurity" class="control-label"></label>
-                <select asp-for="Selling.ProductPurity" asp-items="@Model.MetalPurity" class="form-control"></select>
+                <select asp-for="Selling.ProductPurity" asp-items="@Model.MetalPurity" class="form-control">
+                    <option disabled selected>==Select Product Purity==</option>
+
+                </select>
                 <span asp-validation-for="Selling.ProductPurity" class="text-danger"></span>
             </div>
             <div class="mb-3 row p-1">
                 <label class="p-0" asp-for="Selling.AppointmentSlotId"></label>
-                <select asp-for="@Model.Selling.AppointmentSlotId" asp-items="@Model.AppointmentList" class="form-control"></select>
+                <select asp-for="@Model.Selling.AppointmentSlotId" asp-items="@Model.AppointmentList" class="form-control">
+                    <option disabled selected>==Select Appointment Slot==</option>
+
+                </select>
                 <span asp-validation-for="Selling.AppointmentSlotId" class="text-danger"></span>
             </div>
             @*
