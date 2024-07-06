@@ -123,6 +123,8 @@ namespace fyp.Areas.Customer.Controllers
                
                 _db.Sellings.Add(sellingVM.Selling);
                 _db.SaveChanges();
+                //new added
+                var appointmentSlot =_db.AppointmentSlots.FirstOrDefault(a => a.Id == sellingVM.Selling.AppointmentSlotId);
 
                 // Send confirmation email
                 /*
@@ -149,20 +151,38 @@ namespace fyp.Areas.Customer.Controllers
                 return View(sellingVM);
                 */
                 // Send confirmation email
-                string subject = "Appointment Confirmation";
-                string message = $"Your appointment for selling gold has been confirmed.";
+               
+                    string subject = "Appointment Confirmation";
+                    string message = $@"
+                <p>Dear Customer,</p>
+                <p>Your appointment for selling gold has been confirmed.</p>
+                <p><strong>Appointment Details:</strong></p>
+                <ul>
+                    <li>Date: {appointmentSlot.Date}</li>
+                    <li>Time: {appointmentSlot.Time}</li>
+                    <li>Product Purity: {sellingVM.Selling.ProductPurity}</li>
+                    <li>Weight: {sellingVM.Selling.Weight}</li>
+                </ul>
+                <p>Please make sure to bring a valid ID and your gold items to the appointment.</p>
+                <p>If you have any questions or need to reschedule, please contact us at <a href='mailto:support@example.com'>support@example.com</a>.</p>
+                <p>Thank you for choosing our service.</p>
+                <p>Sincerely,<br>BullionTrade</p>";
+
+
+                //$"Your appointment for selling gold has been confirmed  for {appointmentSlot.Date} at {appointmentSlot.Time}.";
 
                 try
-                {
-                    Task.Run(() => _emailSender.SendEmailAsync(sellingVM.Selling.Email, subject, message)).Wait();
-                    TempData["success"] = "New appointment created successfully.";
-                }
-                catch (Exception)
-                {
-                    TempData["error"] = "Appointment created, but failed to send confirmation email.";
-                }
+                    {
+                        Task.Run(() => _emailSender.SendEmailAsync(sellingVM.Selling.Email, subject, message)).Wait();
+                        TempData["success"] = "New appointment created successfully.";
+                    }
+                    catch (Exception)
+                    {
+                        TempData["error"] = "Appointment created, but failed to send confirmation email.";
+                    }
 
-                return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
+                
             }
             else
             {

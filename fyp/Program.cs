@@ -43,6 +43,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<EmailService>();
 builder.Services.AddSingleton<IEmailSender, fyp.Utility.EmailSender>();
 
+builder.Services.AddTransient<IEmailSender, fyp.Utility.EmailSender>();
 var app = builder.Build();
 
 

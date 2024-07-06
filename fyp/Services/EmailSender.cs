@@ -45,7 +45,7 @@ namespace fyp.Services
                 emailMessage.From.Add(new MailboxAddress(emailSettings["SenderName"], emailSettings["SenderEmail"]));
                 emailMessage.To.Add(new MailboxAddress(toEmail, toEmail));
                 emailMessage.Subject = subject;
-                emailMessage.Body = new TextPart("plain")
+                emailMessage.Body = new TextPart("html")
                 {
                     Text = message
                 };
