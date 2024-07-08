@@ -200,7 +200,7 @@
             <div class="row mt-3 align-items-center">
                 <div class="col-md-3">
                     <div class="input-group mb-3">
-                        <input asp-for="Count" type="number" class="form-control text-center" aria-label="Quantity" value="1" min="1" max="200">
+                        <input asp-for="Count" type="number" class="form-control text-center" aria-label="Quantity" value="1" min="1" max="@ViewBag.MaxQuantity">
                     </div>
                 </div>
                 <div class="col-md-3">

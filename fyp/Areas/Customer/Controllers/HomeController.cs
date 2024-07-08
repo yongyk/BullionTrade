@@ -44,6 +44,8 @@ namespace fyp.Areas.Customer.Controllers
 
         public IActionResult Details(int id)
         {
+            var product = _db.Products.Include(p => p.Category).FirstOrDefault(u => u.Id == id);
+
             //maybe this causes weird err
             ShoppingCart cart = new()
             {
@@ -52,6 +54,7 @@ namespace fyp.Areas.Customer.Controllers
                 ProductId = id
             };
             //Product? prod = _db.Products.Include(p => p.Category).FirstOrDefault(u=>u.Id==id);
+            ViewBag.MaxQuantity = product.Quantity;
 
             return View(cart);
         }

@@ -49,10 +49,13 @@ namespace fyp.Areas.Customer.Controllers
 
         public IActionResult Plus (int cId)
         {
-            var getCart = _db.ShoppingCarts.FirstOrDefault(a => a.Id == cId);
-            getCart.Count += 1;
-            _db.ShoppingCarts.Update(getCart);
-            _db.SaveChanges();
+            var getCart = _db.ShoppingCarts.Include(c=>c.Product).FirstOrDefault(a => a.Id == cId);
+            if (getCart != null && getCart.Count < getCart.Product.Quantity)
+            {
+                getCart.Count += 1;
+                _db.ShoppingCarts.Update(getCart);
+                _db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
