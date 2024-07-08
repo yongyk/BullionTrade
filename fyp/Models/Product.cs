@@ -23,7 +23,7 @@ namespace fyp.Models
         [ValidateNever]
         public Category Category { get; set; }
         //linking to other table (Category table)
-        [Required]
+        [ValidateNever]
         public string ImageUrl { get; set; }
 
         public string ProductBrand { get; set; }
