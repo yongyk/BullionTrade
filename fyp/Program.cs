@@ -42,6 +42,9 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddSingleton<EmailService>();
 builder.Services.AddSingleton<IEmailSender, fyp.Utility.EmailSender>();
+builder.Services.AddSingleton<IEmailSender, EmailService>();
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(opts => opts.TokenLifespan = TimeSpan.FromHours(10));
 
 var app = builder.Build();
 

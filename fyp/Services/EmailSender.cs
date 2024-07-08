@@ -2,10 +2,11 @@
 using MailKit.Net.Smtp;
 using MimeKit;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace fyp.Services
 {
-    public class EmailSender
+    public class EmailSender: IEmailSender
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<EmailSender> _logger;
