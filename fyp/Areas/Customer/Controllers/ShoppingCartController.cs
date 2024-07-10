@@ -129,7 +129,7 @@ namespace fyp.Areas.Customer.Controllers
             return RedirectToAction("Index");
         }
 
-
+        
         public IActionResult Summary()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -157,6 +157,9 @@ namespace fyp.Areas.Customer.Controllers
             }
             return View(ShoppingCartVM);
         }
+        
+      
+        
         [HttpPost]
         [ActionName("Summary")]
 		public IActionResult SummaryPOST()
@@ -316,6 +319,7 @@ namespace fyp.Areas.Customer.Controllers
             _db.SaveChanges();  
             return View(id);  
         }
-
-	}
+        
+    }
+        
 }
