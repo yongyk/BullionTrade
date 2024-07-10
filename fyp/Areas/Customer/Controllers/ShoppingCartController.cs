@@ -22,27 +22,64 @@ namespace fyp.Areas.Customer.Controllers
         {
             _db = db;
         }
+
+		
         public IActionResult Index()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             ShoppingCartVM = new()
             {
-                ShoppingCartList = _db.ShoppingCarts.Where(a=>a.ApplicationUserId == userId).Include (p=>p.Product),
+                //newly added tolist()
+                ShoppingCartList = _db.ShoppingCarts.Where(a=>a.ApplicationUserId == userId)
+                .Include (p=>p.Product)
+                .ToList(),
+
                 OrderHeader=new ()
             };
 
-            
-            foreach(var cart in ShoppingCartVM.ShoppingCartList)
+            //newly added
+            bool cartUpdated = false;
+
+
+            foreach (var cart in ShoppingCartVM.ShoppingCartList)
             {
+                //newly added
+                var currentProduct = _db.Products.FirstOrDefault(p => p.Id == cart.ProductId);
+                if (currentProduct == null || currentProduct.Quantity == 0)
+                {
+                    // Product no longer available, remove from cart
+                    _db.ShoppingCarts.Remove(cart);
+                    cartUpdated = true;
+                    continue;
+                }
+
+                if (cart.Count > currentProduct.Quantity)
+                {
+                    // Adjust the cart quantity to match available stock
+                    cart.Count = currentProduct.Quantity;
+                    _db.ShoppingCarts.Update(cart);
+                    cartUpdated = true;
+                }//till here
+
                 cart.Price = GetPrice(cart);
                 ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
             }
+
+            //newly added
+            if (cartUpdated)
+            {
+                _db.SaveChanges();
+                TempData["success"] = "Your cart has been updated due to changes in product availability.";
+            }//till here
+
             return View(ShoppingCartVM);
            
         }
         
-        private double GetPrice(ShoppingCart shoppingCart)
+
+		
+		private double GetPrice(ShoppingCart shoppingCart)
         {
             return shoppingCart.Product.Price;  
         }
@@ -50,13 +87,21 @@ namespace fyp.Areas.Customer.Controllers
         public IActionResult Plus (int cId)
         {
             var getCart = _db.ShoppingCarts.Include(c=>c.Product).FirstOrDefault(a => a.Id == cId);
-            if (getCart != null && getCart.Count < getCart.Product.Quantity)
+            if (getCart != null)
             {
-                getCart.Count += 1;
-                _db.ShoppingCarts.Update(getCart);
-                _db.SaveChanges();
+                if (getCart.Count < getCart.Product.Quantity)
+                {
+                    getCart.Count += 1;
+                    _db.ShoppingCarts.Update(getCart);
+                    _db.SaveChanges();
+                }
+                else
+                {
+                    TempData["success"] = "Maximum available quantity reached for this product.";
+
+                }
             }
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
         }
 
         public IActionResult Minus(int cId)
@@ -124,13 +169,42 @@ namespace fyp.Areas.Customer.Controllers
 
             ApplicationUser applicationUser = _db.ApplicationUsers.FirstOrDefault(u => u.Id == userId);
 
+            //newly added gpt
+			bool cartUpdated = false;
+
+
 			foreach (var cart in ShoppingCartVM.ShoppingCartList)
 			{
+                //newly added gpt
+				var currentProduct = _db.Products.FirstOrDefault(p => p.Id == cart.ProductId);
+				if (currentProduct == null || currentProduct.Quantity == 0)
+				{
+					_db.ShoppingCarts.Remove(cart);
+					cartUpdated = true;
+					continue;
+				}//till here
+                //newly added gpt
+				if (cart.Count > currentProduct.Quantity)
+				{
+					cart.Count = currentProduct.Quantity;
+					_db.ShoppingCarts.Update(cart);
+					cartUpdated = true;
+				}//till here
+
+
 				cart.Price = GetPrice(cart);
 				ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
 			}
-            //normal user
-            ShoppingCartVM.OrderHeader.PaymentStatus = "Pending";
+            //newly added gpt
+			if (cartUpdated)
+			{
+				_db.SaveChanges();
+				TempData["success"] = "Your cart has been updated due to changes in product availability.";
+				return RedirectToAction("Summary"); // Redirect to re-render the updated cart
+			}//till here
+
+			//normal user
+			ShoppingCartVM.OrderHeader.PaymentStatus = "Pending";
 			ShoppingCartVM.OrderHeader.OrderStatus = "Pending";
 
             _db.OrderHeaders.Add(ShoppingCartVM.OrderHeader);
@@ -214,6 +288,19 @@ namespace fyp.Areas.Customer.Controllers
                   //  }
                 }
                 _db.OrderHeaders.Update(getOrderHeader);
+
+                //newly added
+                var orderDetails = _db.OrderDetails.Where(od => od.OrderHeaderId == id).ToList();
+                foreach (var detail in orderDetails)
+                {
+                    var product = _db.Products.FirstOrDefault(p => p.Id == detail.ProductId);
+                    if (product != null)
+                    {
+                        product.Quantity -= detail.Count;
+                        _db.Products.Update(product);
+                    }
+                }
+                _db.SaveChanges();
 
             }
             // if(!)

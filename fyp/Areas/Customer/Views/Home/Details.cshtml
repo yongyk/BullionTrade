@@ -204,7 +204,11 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <button type="submit" class="btn btn-warning bg-gradient w-100">Add to Cart</button>
+                   @* <button type="submit" class="btn btn-warning bg-gradient w-100">Add to Cart</button>*@
+                        <button type="submit" class="btn btn-warning bg-gradient w-100"
+                        @(Model.Product.Quantity == 0 ? "disabled" : "")>
+                            @(Model.Product.Quantity == 0 ? "Sold Out" : "Add to Cart")
+                        </button>
                 </div>
             </div>
         </div>

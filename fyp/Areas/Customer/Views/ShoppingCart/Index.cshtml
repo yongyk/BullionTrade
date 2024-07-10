@@ -85,7 +85,7 @@
 
 
 
-<form method="post">
+<form method="post" onsubmit="return checkAndRefreshForZeroPriceItems()">
     <body style="margin-top:50px;">
     <div class="container">
         <h2 class="mb-4 text-center">Shopping Cart</h2>
@@ -145,3 +145,13 @@
     </div>
     </body>
 </form>
+<script>
+    function checkAndRefreshForZeroPriceItems() {
+        var hasZeroPriceItem = @Json.Serialize(Model.ShoppingCartList.Any(item => item.Price == 0));
+        if (hasZeroPriceItem) {
+            location.reload();
+            return false;
+        }
+        return true;
+    }
+</script>
