@@ -6,15 +6,24 @@
     <title>Order Report</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha384-GLRmJ0G2A8sRtU8V5Fg3GhvfNT0D1yPkaSRmql5IqUl4mknHh3Qn1K1Kt/y+pX0e" crossorigin="anonymous">
     <style>
-         print {
-            .no-print, .no-print * {
-                display: none !important;
+        @@media print {
+            body * {
+                visibility: hidden; /* Initially hide everything in the body when printing */
+            }
+            .printable, .printable * {
+                visibility: visible; /* Make only elements with class 'printable' visible */
+            }
+            .printable {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%; /* Ensure the printable area is full width */
             }
         }
     </style>
 </head>
 <body style="margin-top:100px;">
-    <div class="container mt-5">
+    <div class="container mt-5 printable"> <!-- Added 'printable' class here -->
         <div class="row">
             <div class="col-12 text-center mb-4">
                 <img src="~/img/BullionTrade.webp" alt="Company Logo" style="max-height: 100px;" class="float-start" />
@@ -51,6 +60,7 @@
             </div>
         </div>
         
+        <!-- Non-printable elements -->
         <div class="row no-print">
             <div class="col-12 text-end mt-3">
                 <button onclick="window.print()" class="btn btn-primary">Print Report</button>
