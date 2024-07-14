@@ -58,7 +58,12 @@ namespace fyp.Areas.Admin.Controllers
                         file.CopyTo(fileStream);
                     }
                     obj.ImageUrl = @"\images\article\" + fileName;
-                    ;
+
+                }
+                else
+                {
+                    obj.ImageUrl = @"\images\article\default.jpg"; // Ensure this path is valid in your project
+
                 }
                 //  obj.DateCreated = DateTime.Now.ToString("yyyy-MM-dd"); 
                 _db.Articles.Add(obj);
