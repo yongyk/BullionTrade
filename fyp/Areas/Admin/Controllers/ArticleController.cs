@@ -71,7 +71,7 @@ namespace fyp.Areas.Admin.Controllers
                 TempData["success"] = "Article created successfully";
                 return RedirectToAction("Index", "Article");
             }
-            return View();
+            return View(obj);
 
         }
 
@@ -133,14 +133,25 @@ namespace fyp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            
+            /*
             var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDeleted.ImageUrl.TrimStart('\\'));
 
             if (System.IO.File.Exists(oldImagePath))
             {
                 System.IO.File.Delete(oldImagePath);
             }
+            */
 
+            // Only delete the image file if it's not the default image
+            if (!productToBeDeleted.ImageUrl.Equals(@"\images\article\default.jpg", StringComparison.OrdinalIgnoreCase))
+            {
+                var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDeleted.ImageUrl.TrimStart('\\'));
+
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+            }
             _db.Articles.Remove(obj);
             _db.SaveChanges();
             TempData["success"] = "Article deleted successfully";
