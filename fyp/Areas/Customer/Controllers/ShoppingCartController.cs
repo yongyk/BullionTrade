@@ -4,6 +4,7 @@ using fyp.Data;
 using fyp.Models;
 using fyp.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Stripe.Checkout;
@@ -16,11 +17,14 @@ namespace fyp.Areas.Customer.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly ApplicationDbContext _db;
+
+        private readonly IEmailSender _emailSender; 
         [BindProperty]
         public ShoppingCartVM ShoppingCartVM { get; set; }      
-        public ShoppingCartController(ApplicationDbContext db)
+        public ShoppingCartController(ApplicationDbContext db, IEmailSender emailSender)
         {
             _db = db;
+            _emailSender = emailSender;
         }
 
 		
@@ -311,8 +315,13 @@ namespace fyp.Areas.Customer.Controllers
             getOrderHeader.PaymentIntentId= session.PaymentIntentId;
             getOrderHeader.PaymentDate = DateTime.Now;
             _db.OrderHeaders.Update(getOrderHeader);
-            _db.SaveChanges();  
+            _db.SaveChanges();
 
+
+            _emailSender.SendEmailAsync(
+                orderHeader.ApplicationUser.Email, "New Order - BullionTrade",
+                $"<p> New order is created - {orderHeader.Id}</p>"
+                );
 
             List<ShoppingCart>shoppingCarts= _db.ShoppingCarts.Where(u=>u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
             _db.ShoppingCarts.RemoveRange(shoppingCarts);

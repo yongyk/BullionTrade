@@ -126,7 +126,7 @@ namespace fyp.Areas.Identity.Pages.Account
                 var user = await _userManager.FindByEmailAsync(Input.Email);
                 if (user != null && !user.EmailConfirmed)
                 {
-                    ModelState.AddModelError(string.Empty, "Please go to the email you have registered to confirm your account.");
+                    ModelState.AddModelError(string.Empty, "Please go to the email you have registered with us to confirm your account for the first time login.");
                     return Page();
                 }
                 // This doesn't count login failures towards account lockout
