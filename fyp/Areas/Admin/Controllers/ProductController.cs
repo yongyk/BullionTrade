@@ -98,6 +98,7 @@ namespace fyp.Areas.Admin.Controllers
                     string productPath = Path.Combine(wwwRootPath, @"images\product");
                     if (!string.IsNullOrEmpty(prod.Product.ImageUrl))
                     {
+                        //delete old img
                         var oldImagePath =
                            Path.Combine(wwwRootPath, prod.Product.ImageUrl.TrimStart('\\'));
 
@@ -111,10 +112,41 @@ namespace fyp.Areas.Admin.Controllers
                         file.CopyTo(fileStream);
                     }
                     prod.Product.ImageUrl = @"\images\product\" + fileName;
-                    ;
                 }
+                else if (prod.Product.Id != 0)
+                {
+                    // Preserve the existing ImageUrl for the existing product
+                    var existingProduct = _db.Products.AsNoTracking().FirstOrDefault(p => p.Id == prod.Product.Id);
+                    if (existingProduct != null)
+                    {
+                        prod.Product.ImageUrl = existingProduct.ImageUrl;
+                    }
+                }
+                else
+                {
+                    prod.Product.ImageUrl = @"\images\product\default.jpg"; // Ensure this path is valid in your project
+
+                }
+                /*
+                var prodFromDb = _db.Products.FirstOrDefault(u => u.Id == prod.Product.Id);
+
+                if (prodFromDb != null)
+                {
+                    prodFromDb.Name = prod.Product.Name;
+                    prodFromDb.Description = prod.Product.Description;
+                    prodFromDb.Price = prod.Product.Price;
+                    prodFromDb.CategoryId = prod.Product.CategoryId;
+                    prodFromDb.ProductBrand = prod.Product.ProductBrand;
+                    prodFromDb.ProductMetal = prod.Product.ProductMetal;
+                    prodFromDb.ProductPurity = prod.Product.ProductPurity;
 
 
+                    if (prod.Product.ImageUrl != null)
+                    {
+                        prodFromDb.ImageUrl = prod.Product.ImageUrl;
+                    }
+                }
+                */
                 if (prod.Product.Id == 0)
                 {
                     _db.Products.Add(prod.Product);

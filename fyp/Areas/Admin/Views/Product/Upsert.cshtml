@@ -19,6 +19,8 @@
                     <div class="mb-3 row p-1">
                         <label class="p-0" asp-for="Product.Description"></label>
                         <textarea asp-for="Product.Description" class="form-control"></textarea>
+                        <span asp-validation-for="Product.Description" class="text-danger"></span>
+
                     </div>
                     <div class="mb-3 row p-1">
                         <label class="p-0" asp-for="Product.Price"></label>
@@ -87,7 +89,13 @@
 
                 </div>
                      <div class="col-2">
-                         <img src="@Model.Product.ImageUrl" width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
+                      @*   <img src="@Model.Product.ImageUrl" width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />*@
+
+
+                    @if (!string.IsNullOrEmpty(Model.Product.ImageUrl))
+                    {
+                        <img src="@Model.Product.ImageUrl" width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
+                    }
                      
                  </div>
            
@@ -102,6 +110,15 @@
             // Only include plugins that are part of the free plan
             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | addcomment showcomments | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            setup: function (editor) {
+                editor.on('change', function () {
+                    editor.save(); // Synchronize TinyMCE content with the underlying textarea
+                });
+            }
+        });
+        // Ensure the TinyMCE content is synchronized before form submission
+        document.querySelector('form').addEventListener('submit', function (e) {
+            tinymce.triggerSave();
         });
     </script>
 
