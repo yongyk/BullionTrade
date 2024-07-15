@@ -41,8 +41,16 @@ builder.Services.AddScoped<GoldPriceService>();
 builder.Services.AddHttpClient();
 
 builder.Services.AddSingleton<EmailService>();
+builder.Services.AddSingleton<fyp.Utility.EmailSender>();   
 builder.Services.AddSingleton<IEmailSender, fyp.Utility.EmailSender>();
 builder.Services.AddSingleton<IEmailSender, EmailService>();
+
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = true;
+});
+
 
 builder.Services.Configure<DataProtectionTokenProviderOptions>(opts => opts.TokenLifespan = TimeSpan.FromHours(10));
 
