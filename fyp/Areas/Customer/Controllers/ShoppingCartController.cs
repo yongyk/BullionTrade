@@ -80,8 +80,6 @@ namespace fyp.Areas.Customer.Controllers
             return View(ShoppingCartVM);
            
         }
-        
-
 		
 		private double GetPrice(ShoppingCart shoppingCart)
         {
